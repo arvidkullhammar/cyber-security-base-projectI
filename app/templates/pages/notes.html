@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{user.first_name}}s notes</title>
+  </head>
+  <body>
+    <h2>{{user.first_name}}s notes</h2>
+    {% if notes %}
+    <ul>
+      {% for note in notes %}
+      <li>
+        <p>{{note.content}}
+          <form action="/delete" method="GET">
+            <input type="hidden" name="note_id" value="{{ note.id }}">
+            <button type="submit">Delete</button></p>
+          </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No notes available.</p>
+    {% endif %}
+  </body>
+</html>

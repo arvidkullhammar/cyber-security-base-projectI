@@ -1,0 +1,7 @@
+# Requirements for Django project
+
+# Python version
+python>=3.6,<4
+
+# Django version
+django>=3.0,<4

@@ -23,7 +23,6 @@ def index(request):
 def notes(request,username):
     try:
         user = User.objects.get(username=username)
-        print(f"---USER---",user)
     except User.DoesNotExist:
         raise Http404("User does not exist") 
     #Flaw 2 - Broken access control
@@ -63,6 +62,7 @@ def delete_note(request):
 #Flaw 4 - Injection
         with connection.cursor() as cursor:
             cursor.execute(f"DELETE FROM app_note WHERE id = {note_id}")
+        # Code below uses DJangos built in ORM
         #note = Note.objects.get(id=note_id)
         #note.delete()
         return redirect("/")

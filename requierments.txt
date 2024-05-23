@@ -1,7 +1,7 @@
-# Requirements for Django project
+# Requirements for running the web application
 
 # Python version
-python>=3.6,<4
+python==3.9.6
 
 # Django version
-django>=3.0,<4
+django==4.2.6

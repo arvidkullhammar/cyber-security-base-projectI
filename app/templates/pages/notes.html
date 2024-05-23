@@ -12,6 +12,10 @@
       {% for note in notes %}
       <li>
         <p>{{note.content}}
+          <!--- 
+            Flaw 5 - CSRF
+            Method should be changed to POST
+          -->
           <form action="/delete" method="GET">
             <input type="hidden" name="note_id" value="{{ note.id }}">
             <button type="submit">Delete</button></p>

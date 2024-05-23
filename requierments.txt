@@ -1,7 +1,3 @@
 # Requirements for running the web application
-
-# Python version
-python==3.9.6
-
 # Django version
 django==4.2.6

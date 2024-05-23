@@ -1,9 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 from .models import Note
 from django.contrib.auth.models import User
 from django.db import connection
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
+
+
 
 
 
@@ -14,22 +18,30 @@ def index(request):
     else:
         return render(request,"pages/index.html")
 
+#Flaw 1 - Broken access control
 #@login_required
 def notes(request,username):
-    user = User.objects.get(username=username)
+    try:
+        user = User.objects.get(username=username)
+        print(f"---USER---",user)
+    except User.DoesNotExist:
+        raise Http404("User does not exist") 
+    #Flaw 2 - Broken access control
     #if  user.username != request.user.username:
-    # print("Unauthorised access attempt")
-    #   raise PermissionDenied
 
-    notes = Note.objects.raw(f"SELECT * FROM app_note WHERE creator_id = {user.id}")
-    #notes = Note.objects.filter(creator=request.user)
+    #Flaw 3 - Logging
+    # print(f"Unauthorised access attempt - {request.user.username} tried to access {user.username}s notes")
+
+       #raise PermissionDenied
+
+    notes = Note.objects.filter(creator=request.user)
 
 
     context = {"notes":  notes if notes else [],"user":user}
     return render(request,"pages/notes.html",context)
 
 
-#@login_required
+@login_required
 def create_note(request):    
     if request.method == 'POST':
         content = request.POST['content']
@@ -41,14 +53,18 @@ def create_note(request):
         return redirect("/")
 
 
-
-def delete_note(request):    
+#Flaw 5 - CSRF
+#@csrf_protect
+def delete_note(request):
+    #should be changed to POST request
     if request.method == 'GET':
         note_id = request.GET['note_id']
-        #note = Note.objects.get(id=note_id)
-        #note.delete()
+
+#Flaw 4 - Injection
         with connection.cursor() as cursor:
             cursor.execute(f"DELETE FROM app_note WHERE id = {note_id}")
+        #note = Note.objects.get(id=note_id)
+        #note.delete()
         return redirect("/")
 
 

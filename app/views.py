@@ -57,9 +57,11 @@ def create_note(request):
 
 def delete_note(request):
     #Flaw 5 - CSRF
-    #should be changed to POST request
+    
+    #--- replace faulty if statement below with this ---
     #if request.method == 'POST':
     #    note_id = request.POST['note_id']
+
     if request.method == 'GET':
         note_id = request.GET['note_id']
 

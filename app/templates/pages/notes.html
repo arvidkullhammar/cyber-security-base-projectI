@@ -11,16 +11,30 @@
     <ul>
       {% for note in notes %}
       <li>
-        <p>{{note.content}}
+        <p>
+          {{note.content}}
           <!--- 
             Flaw 5 - CSRF
-            Method should be changed to POST
-          -->
-          <form action="/delete" method="GET">
-            <input type="hidden" name="note_id" value="{{ note.id }}">
-            <button type="submit">Delete</button></p>
-          </form>
+            Method should be changed to POST and csrf token added to form
+
+          --- Replace the faulty form below with this ---
+            <form action="/delete/" method="post">
+              {% csrf_token %} 
+              <input type="hidden" name="note_id" value="{{ note.id }}">
+              <button type="submit">Delete</button></p>
+              </form>
+
+            -->
+
+       
+            <form action="/delete" method="GET">
+              <input type="hidden" name="note_id" value="{{ note.id }}">
+              <button type="submit">Delete</button></p>
+            </form>
+          
+        </p>
       </li>
+
       {% endfor %}
     </ul>
     {% else %}

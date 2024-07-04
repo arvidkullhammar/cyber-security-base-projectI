@@ -25,13 +25,16 @@ def notes(request,username):
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         raise Http404("User does not exist") 
-    #Flaw 2 - Broken access control
-    #if  user.username != request.user.username:
+    print(f"user {user.id}")
+    print(f" request {request.user.id}")
+#Flaw 1 - Broken access control
+    #if  user.id != request.user.id:
 
     #Flaw 3 - Logging
-    # print(f"Unauthorised access attempt - {request.user.username} tried to access {user.username}s notes")
+        #print(f"Unauthorised access attempt - {request.user.username} tried to access {user.username}s notes")
 
-       #raise PermissionDenied
+        #raise PermissionDenied
+
 
     notes = Note.objects.filter(creator=request.user)
 
@@ -52,10 +55,11 @@ def create_note(request):
         return redirect("/")
 
 
-#Flaw 5 - CSRF
-#@csrf_protect
 def delete_note(request):
+    #Flaw 5 - CSRF
     #should be changed to POST request
+    #if request.method == 'POST':
+    #    note_id = request.POST['note_id']
     if request.method == 'GET':
         note_id = request.GET['note_id']
 

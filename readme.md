@@ -1,6 +1,6 @@
 # Cyber Security Base Project
 
-This is my project for the Cyber Security Base course at the University of Helsinki.
+This is my project for the Cyber Security Base course at the University of Helsinki: https://cybersecuritybase.mooc.fi/
 
 It is a web application with different security flaws. I point out the flaws in the essay below and refer to comments in the code.
 
